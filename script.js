@@ -12,16 +12,10 @@ function getComputerChoice() {
 
     }
 
-function getHumanChoice() {
-    const userInput = prompt("Please enter rock, paper, or scissors:");
-    const validInput=userInput.toLowerCase();
-    if (validInput === "rock" || validInput === "paper" || validInput === "scissors") {
-        return validInput;
-
-    } else {
-        console.log("Invalid choice. Please try again.");
-        return getHumanChoice(); // Recursively ask for input until valid
-    }
+function getHumanChoice(choice) {
+  const humanChoice = choice;
+  console.log(`You chose: ${choice}`);
+  return choice; 
 }   
 
 function playRound(humanChoice, computerChoice) {
@@ -44,22 +38,30 @@ function playRound(humanChoice, computerChoice) {
   return { humanScore, computerScore };
 }
 
-function playGame() {
-    for (let i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
-    if (humanScore > computerScore) {
-        console.log("Congratulations! You win the game!");
-    } else if (computerScore > humanScore) {
-        console.log("Sorry! The computer wins the game.");
+
+function playGame(choice) {
+  if (isGameOver()) {
+    console.log("Game is already over. Refresh to play again.");
+    return;
+  }
+
+  const humanSelection = getHumanChoice(choice);
+  const computerSelection = getComputerChoice();
+  playRound(humanSelection, computerSelection);
+
+  if (isGameOver()) {
+    if (humanScore === 5) {
+      console.log("🎉 Congratulations! You win the game!");
     } else {
-        console.log("It's a tie overall!");
+      console.log("💻 The computer wins the game. Better luck next time!");
     }
-}   
+  }
+}
+
+function isGameOver() {
+  return humanScore === 5 || computerScore === 5
+}
 
 let humanScore = 0;
 let computerScore = 0;
-playGame(); // Start the game
 
